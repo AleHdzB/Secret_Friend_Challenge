@@ -20,12 +20,14 @@ function addFriend() {
 function showFriends() {
     numFriends = friends.length;
     console.log("Number of friends: " + numFriends);
+    var friendList = document.querySelector('.name-list');
     if (numFriends === 0) {
-        alert('You have no friends :( ');
+        friendList.innerHTML = '';
+
+        
         return false;
     }
     
-    var friendList = document.querySelector('.name-list');
     friendList.innerHTML = '';
     for ( var i = 0; i < numFriends; i++) {
         friendList.innerHTML += '<li>' + friends[i] + '</li>';
@@ -33,18 +35,38 @@ function showFriends() {
     return true;
 }
 
-function randomFriend(){
-    numFriends = friends.length;
-    if (numFriends === 0) {
+// Modifica tu función randomFriend() así:
+function randomFriend() {
+    const imageElement = document.querySelector('.Image');
+    const resultList = document.querySelector('.result-list');
+    const originalStaticImage = 'assets/image.png';  // Frame estático
+    // Resto de la lógica del sorteo
+    if (friends.length === 0) {
         alert('You have no friends :(');
+        resultList.innerHTML = '';
         return false;
     }
-    var random = Math.floor(Math.random() * numFriends);
-    var secretFriend = friends[random];
-    document.querySelector('.result-list').innerHTML = secretFriend;
-    friends.pop(secretFriend);
-    showFriends();
 
-
-
+    // Limpiar resultados anteriores
+    resultList.innerHTML = '';
+    
+    // Mostrar el GIF animado
+    imageElement.src = `assets/amigo-secreto.gif?t=${Date.now()}`; // Cache buster
+    
+    // Restaurar el frame estático después de 5 segundos
+    setTimeout(() => {
+        imageElement.src = originalStaticImage;
+        const randomIndex = Math.floor(Math.random() * friends.length);
+        resultList.innerHTML = friends[randomIndex];
+        friends.splice(randomIndex, 1);
+        showFriends();
+    }, 4000);
+    
 }
+
+// Detectar tecla Enter en el campo de entrada
+document.getElementById('input').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        addFriend();
+    }
+});
