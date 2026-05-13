@@ -1,1 +1,1 @@
-![Secreet Fiend Game](./assets/SecretFriendChallenge.gif)
+![Secreet Fiend Game](./assets/SecretFriendGame.gif)
